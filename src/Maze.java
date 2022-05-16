@@ -123,11 +123,11 @@ class Maze {
 		ArrayList<Square> path = new ArrayList<Square>();
 		MazeSolver solver = new MazeSolver();
 		QueueWorklist wl = new QueueWorklist();
-		Square target = solver.solve(this, wl);
+		Square target = finish;
 		Square prev = target.getPrevious();
 		while(prev != null){
-			path.add(prev);
-			prev = target.getPrevious();
+                    path.add(prev);
+                    prev = prev.getPrevious();
 		}
 		return path;
 	}

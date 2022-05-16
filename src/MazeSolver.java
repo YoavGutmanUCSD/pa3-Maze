@@ -3,130 +3,89 @@
 import java.util.ArrayList;
 
 public class MazeSolver {
-	
-	public static Square solve(Maze maze, SearchWorklist wl) {
-		Square current = maze.start;
-		Square target = maze.finish;
-		current.visit();
-		wl.add(current);
-		while(!wl.isEmpty()){
-			current = wl.remove();
-			if (target == current){
-				return current;
-			}
-			else {
-				ArrayList<Square> neighbors = new ArrayList<Square>();
-				// add north
-				if(current.getRow() + 1 < maze.contents.length){
-					Square north = maze.contents[current.getRow()+1][current.getCol()];
-					if(!north.getIsWall()){
-						neighbors.add(north);
-					}
-				}
-				// add south
-				if(current.getRow() - 1 < maze.contents.length & current.getRow()-1 >-1){
-					Square south = maze.contents[current.getRow()-1][current.getCol()];
-					if(!south.getIsWall()){
-						neighbors.add(south);
-					}
-				}
-				// add east
-				if(current.getCol() + 1 < maze.contents[0].length){
-					Square east = maze.contents[current.getCol()+1][current.getCol()];
-					if(!east.getIsWall()){
-						neighbors.add(east);
-					}
-				}
-				// add west
-				if(current.getCol() - 1 < maze.contents[0].length & current.getCol() -1 > -1){
-					Square west = maze.contents[current.getCol()-1][current.getCol()];
-					if(!west.getIsWall()){
-						neighbors.add(west);
-					}
-				}
 
-				for(Object neighbor: neighbors.toArray()){
-					neighbor.setPrevious(current);
-					neighbor.visit();
-					wl.add(neighbor);
-				}
-			}
-		}
-		return null;
-	}
+    public static Square solve(Maze maze, SearchWorklist wl){
+        if(maze.start == null || maze.finish == null) return null;
+        maze.start.visit();
+        wl.add(maze.start);
 
-	/* Add any helper methods you want */
-	// public static boolean isWall(Square sq){
-		
-	// }
-	// private static Square[] getNeighbors(Square current, Maze maze){
-	// 	ArrayList<Square> neighbors = new ArrayList<Square>();
-	// 	// add north
-	// 	if(current.getRow() + 1 < maze.contents.length){
-	// 		Square north = maze.contents[current.getRow()+1][current.getCol()];
-	// 		if(!north.getIsWall()){
-	// 			neighbors.add(north);
-	// 		}
-	// 	}
-	// 	// add south
-	// 	if(current.getRow() - 1 < maze.contents.length & current.getRow()-1 >-1){
-	// 		Square south = maze.contents[current.getRow()-1][current.getCol()];
-	// 		if(!south.getIsWall()){
-	// 			neighbors.add(south);
-	// 		}
-	// 	}
-	// 	// add east
-	// 	if(current.getCol() + 1 < maze.contents[0].length){
-	// 		Square east = maze.contents[current.getCol()+1][current.getCol()];
-	// 		if(!east.getIsWall()){
-	// 			neighbors.add(east);
-	// 		}
-	// 	}
-	// 	// add west
-	// 	if(current.getCol() - 1 < maze.contents[0].length & current.getCol() -1 > -1){
-	// 		Square west = maze.contents[current.getCol()-1][current.getCol()];
-	// 		if(!west.getIsWall()){
-	// 			neighbors.add(west);
-	// 		}
-	// 	}
-	// 	Object[] neighborArray = neighbors.toArray();
-	// 	return neighborArray;
-		
-	// }
-	// public static Square chooseNextNeighbor(Square current, Maze maze){
-	// 	// check north
-	// 	if(current.getRow() + 1 < maze.contents.length){
-	// 		Square north = maze.contents[current.getRow()+1][current.getCol()];
-	// 		if(north.getIsWall()){
-	// 			return north;
-	// 		}
-	// 	}
-	// 	// check south
-	// 	if(current.getRow() - 1 < maze.contents.length){
-	// 		Square south = maze.contents[current.getRow()-1][current.getCol()];
-	// 		if(south.getIsWall()){
-	// 			return south;
-	// 		}
-	// 	}
-	// 	// check east
-	// 	if(current.getCol() + 1 < maze.contents[0].length){
-	// 		Square east = maze.contents[current.getCol()+1][current.getCol()];
-	// 		if(east.getIsWall()){
-	// 			return east;
-	// 		}
-	// 	}
-	// 	// check west
-	// 	if(current.getCol() - 1 < maze.contents[0].length){
-	// 		Square west = maze.contents[current.getCol()-1][current.getCol()];
-	// 		if(west.getIsWall()){
-	// 			return west;
-	// 		}
-	// 	}
-	// 	return null;
-	// }
-	// public static int distance(Square x1y1, Square x2y2){
-	// 	int x1, y1;
-	// 	int x2, y2;
+        while(!wl.isEmpty()){
+            Square current = wl.remove();
+            if(current == maze.finish) {
+                System.out.println("DONE");
+                return current;
+            }
+            addToWorklist(atOffset(current, new int[]{1, 0}, maze), current, wl);
+            addToWorklist(atOffset(current, new int[]{-1, 0}, maze), current, wl);
+            addToWorklist(atOffset(current, new int[]{0, 1}, maze), current, wl);
+            addToWorklist(atOffset(current, new int[]{0, -1}, maze), current, wl);
+            // System.out.format("Previous is: %s\n", current.getPrevious());
+        }
+        System.out.println("You weren't supposed to do that.");
+        return null;
+    }
+    /*
+     * recursively examine worklist until finished square found.
+     * this one technically works, but returns null every time 
+     * this is because all the trees it generates don't stop going
+     * the last one to finish will eventually be null 9 times out of 10
+     */
+    // public static Square solve(Maze maze, SearchWorklist wl) {
+    //     if(maze.start == null || maze.finish == null) return null;
+    //     maze.start.visit();
+    //     wl.add(maze.start);
+    //     return solveWorklist(maze, wl);
+    // }
+    // private static Square solveWorklist(Maze maze, SearchWorklist wl){
+    //     if(wl.isEmpty()){
+    //         System.out.println("EMPTY");
+    //         return null;
+    //     }
+    //     Square current = wl.remove();
+    //     if(current == maze.finish) {
+    //         System.out.println("DONE");
+    //         return current;
+    //     }
+    //     addToWorklist(atOffset(current, new int[]{1, 0}, maze), current, wl);
+    //     addToWorklist(atOffset(current, new int[]{-1, 0}, maze), current, wl);
+    //     addToWorklist(atOffset(current, new int[]{0, 1}, maze), current, wl);
+    //     addToWorklist(atOffset(current, new int[]{0, -1}, maze), current, wl);
+    //     // System.out.println(current.toString());
+    //     return solveWorklist(maze, wl);
+    // }
+    // adds non-null squares to worklist
+    private static void addToWorklist(Square sq, Square prev, SearchWorklist wl) {
+        if(sq == null) return;
+        // System.out.format("Added %s\n", sq.toString());
+        sq.setPrevious(prev);
+        sq.visit();
+        wl.add(sq);
+        // System.out.format("Set previous to %s\n", sq.getPrevious().toString());
+    }
 
-	// }
+    // returns square at coordinate offset
+    public static Square atOffset(Square sq, int[] offset, Maze maze){
+        int[] coords = {sq.getRow() + offset[0], sq.getCol() + offset[1]};
+        return atCoords(coords, maze);
+    }
+
+    // return square at coordinates
+    public static Square atCoords(int[] coords, Maze maze) {
+        if(isValid(coords, maze)){
+            return maze.contents[coords[0]][coords[1]];
+        }
+        return null;
+    }
+
+    // return "do these coordinates refer to a valid square?"
+    public static boolean isValid(int[] coords, Maze maze){
+        boolean validInputForMaze = coords[0] < maze.contents.length & 
+            coords[1] < maze.contents[0].length & 
+            coords.length == 2 & 
+            coords[0] >= 0 &
+            coords[1] >= 0; 
+        if(!validInputForMaze) return false;
+        Square sqAtCoords = maze.contents[coords[0]][coords[1]];
+        return !sqAtCoords.getIsWall() & !sqAtCoords.isVisited();
+    }
 }
