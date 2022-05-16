@@ -29,7 +29,15 @@ public class TestSolvers {
             result += "\n"+s;
         return (result+"\n");
     }
-
+    public void testWorklist(SearchWorklist wl, Square[] contents, Square expectedRemove){
+        for(Square content: contents){
+            wl.add(content);
+        }
+        Square removed = wl.remove();
+        assertEquals(removed, expectedRemove);
+        if(contents.length == 1) assertTrue(wl.isEmpty());
+        else assertFalse(wl.isEmpty());
+    }
     /* Add your own Worklist tests below */
 
     /* ************** HINT ******************** 
@@ -50,12 +58,12 @@ public class TestSolvers {
         Maze mazeMaze = new Maze(myMaze);
         System.out.println(formatMaze(myMaze));
     }
+
     @Test
-    public void mazeTestGiven(){
-        System.out.println("Start of mazeTestGiven");
+    public void mazeTestQueue(){
         QueueWorklist wl = new QueueWorklist();
         Maze m = new Maze(new String[] {
-            "#___",
+                "#___",
                 "__F_",
                 "S##_",
                 "____"
@@ -67,8 +75,113 @@ public class TestSolvers {
             "____"
         };
         checkMaze(wl, m, queueSol);
+    }
+
+    @Test
+    public void mazeTestStack(){
+        StackWorklist wl = new StackWorklist();
+        Maze m = new Maze(new String[] {
+            "#___",
+            "__F_",
+            "S##_",
+            "____"
+        });
+        // this is incredibly stupid
+        String[] stackSol = {
+            "#___",
+            "__F*",
+            "S##*",
+            "****"
+        };
+        checkMaze(wl, m, stackSol);
+    }
+    @Test
+    public void mazeTestBigQueue(){
+        QueueWorklist wl = new QueueWorklist();
+        Maze m = new Maze(new String[] {
+            "##########",
+            "S_________",
+            "_########_",
+            "_________F"
+        });
+        String[] sol = {
+            "##########",
+            "S_________",
+            "*########_",
+            "*********F"
+        };
+        checkMaze(wl, m, sol);
+    }
+    @Test
+    public void mazeTestBigStack(){
+        StackWorklist wl = new StackWorklist();
+        Maze m = new Maze(new String[] {
+            "##########",
+            "S_________",
+            "_########_",
+            "_________F"
+        });
+        String[] sol = {
+            "##########",
+            "S*********",
+            "_########*",
+            "_________F"
+        };
+        checkMaze(wl, m, sol);
+    }
+    @Test
+    public void mazeTestUnequalPathwaysQueue(){
+        QueueWorklist wl = new QueueWorklist();
+        Maze m = new Maze(new String[] {
+            "##############",
+            "S_____________",
+            "_############_",
+            "_________F____"
+        });
+        String[] sol = {
+            "##############",
+            "S_____________",
+            "*############_",
+            "*********F____"
+        };
+        checkMaze(wl, m, sol);
 
     }
+    @Test
+    public void mazeTestUnequalPathwaysStack(){
+        StackWorklist wl = new StackWorklist();
+        Maze m = new Maze(new String[] {
+            "##############",
+            "S_____________",
+            "_############_",
+            "_________F____"
+        });
+        String[] sol = {
+            "##############",
+            "S*************",
+            "_############*",
+            "_________F****"
+        };
+        checkMaze(wl, m, sol);
+
+    }
+    // worklist tests
+    @Test
+    public void testQueueWorklist(){
+        Square[] contents = {new Square(1,1,false), new Square(2,2,true), new Square(3,3,false)};
+        Square expectedRemove = contents[0];
+        testWorklist(new QueueWorklist(), contents, expectedRemove);
+    } 
+
+    @Test
+    public void testStackWorklist(){
+        Square[] contents = {new Square(1,1,false), new Square(2,2,true), new Square(3,3,false)};
+        Square expectedRemove = contents[contents.length-1];
+        testWorklist(new StackWorklist(), contents, expectedRemove);
+    } 
+    // solver tests
+
+
     // isValid tests
     @Test
     public void testWallInvalid(){
@@ -125,20 +238,6 @@ public class TestSolvers {
         int[] coords = {1,0};
         assertTrue(MazeSolver.isValid(coords, m));
     }
-    // @Test
-    // public void testNorthOffset(){
-    //     Maze m = new Maze(new String[] {
-    //         "#___",
-    //             "__F_",
-    //             "S##_",
-    //             "____"
-    //     });
-    //     int[] coords = {0,0};
-    //     assertFalse(MazeSolver.atOffset(coords, m));
-    // }
-// worklist tests
-
-// solver tests
 }
 
 

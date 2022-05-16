@@ -3,6 +3,11 @@
 import java.util.ArrayList;
 
 public class MazeSolver {
+    // coordinate offsets
+    static int[] NORTH = new int[]{-1,0};
+    static int[] SOUTH = new int[]{1,0};
+    static int[] EAST = new int[]{0,1};
+    static int[] WEST = new int[]{0,-1};
 
     public static Square solve(Maze maze, SearchWorklist wl){
         if(maze.start == null || maze.finish == null) return null;
@@ -12,14 +17,14 @@ public class MazeSolver {
         while(!wl.isEmpty()){
             Square current = wl.remove();
             if(current == maze.finish) {
-                System.out.println("DONE");
+                // System.out.println("DONE");
                 return current;
             }
-            addToWorklist(atOffset(current, new int[]{1, 0}, maze), current, wl);
-            addToWorklist(atOffset(current, new int[]{-1, 0}, maze), current, wl);
-            addToWorklist(atOffset(current, new int[]{0, 1}, maze), current, wl);
-            addToWorklist(atOffset(current, new int[]{0, -1}, maze), current, wl);
-            // System.out.format("Previous is: %s\n", current.getPrevious());
+            // System.out.format("wl length: %s\n", wl.size());
+            addToWorklist(atOffset(current, NORTH, maze), current, wl); 
+            addToWorklist(atOffset(current, SOUTH, maze), current, wl);
+            addToWorklist(atOffset(current, EAST, maze), current, wl); 
+            addToWorklist(atOffset(current, WEST, maze), current, wl);
         }
         System.out.println("You weren't supposed to do that.");
         return null;

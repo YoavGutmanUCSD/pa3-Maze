@@ -22,6 +22,10 @@ class StackWorklist implements SearchWorklist {
 	public boolean isEmpty(){
 		return localStorage.empty();
 	}
+        @Override
+        public int size() {
+            return localStorage.size();
+        }
 }
 
 class QueueWorklist implements SearchWorklist {
@@ -41,10 +45,15 @@ class QueueWorklist implements SearchWorklist {
 	public boolean isEmpty(){
 		return localStorage.size() == 0;
 	}
+        @Override
+        public int size() {
+            return localStorage.size();
+        }
 }
 
 public interface SearchWorklist {
 	void add(Square c);
 	Square remove();
 	boolean isEmpty();
+        int size();
 }
