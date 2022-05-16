@@ -69,13 +69,13 @@ public class MazeSolver {
     }
 
     // returns square at coordinate offset
-    public static Square atOffset(Square sq, int[] offset, Maze maze){
+    private static Square atOffset(Square sq, int[] offset, Maze maze){
         int[] coords = {sq.getRow() + offset[0], sq.getCol() + offset[1]};
         return atCoords(coords, maze);
     }
 
     // return square at coordinates
-    public static Square atCoords(int[] coords, Maze maze) {
+    private static Square atCoords(int[] coords, Maze maze) {
         if(isValid(coords, maze)){
             return maze.contents[coords[0]][coords[1]];
         }
@@ -83,7 +83,7 @@ public class MazeSolver {
     }
 
     // return "do these coordinates refer to a valid square?"
-    public static boolean isValid(int[] coords, Maze maze){
+    private static boolean isValid(int[] coords, Maze maze){
         boolean validInputForMaze = coords[0] < maze.contents.length & 
             coords[1] < maze.contents[0].length & 
             coords.length == 2 & 

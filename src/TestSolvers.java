@@ -183,61 +183,61 @@ public class TestSolvers {
 
 
     // isValid tests
-    @Test
-    public void testWallInvalid(){
-        Maze m = new Maze(new String[] {
-            "#___",
-                "__F_",
-                "S##_",
-                "____"
-        });
-        int[] coords = {0,0};
-        assertFalse(MazeSolver.isValid(coords, m));
-    }
-    @Test
-    public void testTooBigRow(){
-        Maze m = new Maze(new String[] {
-            "#___",
-                "__F_",
-                "S##_",
-                "____"
-        });
-        int[] coords = {m.contents.length,0};
-        assertFalse(MazeSolver.isValid(coords, m));
-    }
-    @Test
-    public void testTooBigCol(){
-        Maze m = new Maze(new String[] {
-            "#___",
-                "__F_",
-                "S##_",
-                "____"
-        });
-        int[] coords = {0,m.contents[0].length};
-        assertFalse(MazeSolver.isValid(coords, m));
-    }
-    @Test
-    public void testCoordsTooSmall(){
-        Maze m = new Maze(new String[] {
-            "#___",
-                "__F_",
-                "S##_",
-                "____"
-        });
-        int[] coords = {-1,-1};
-        assertFalse(MazeSolver.isValid(coords, m));
-    }
-    @Test
-    public void testIsValid(){
-        Maze m = new Maze(new String[] {
-            "#___",
-                "__F_",
-                "S##_",
-                "____"
-        });
-        int[] coords = {1,0};
-        assertTrue(MazeSolver.isValid(coords, m));
-    }
+    // @Test
+    // public void testWallInvalid(){
+    //     Maze m = new Maze(new String[] {
+    //         "#___",
+    //             "__F_",
+    //             "S##_",
+    //             "____"
+    //     });
+    //     int[] coords = {0,0};
+    //     assertFalse(MazeSolver.isValid(coords, m));
+    // }
+    // @Test
+    // public void testTooBigRow(){
+    //     Maze m = new Maze(new String[] {
+    //         "#___",
+    //             "__F_",
+    //             "S##_",
+    //             "____"
+    //     });
+    //     int[] coords = {m.contents.length,0};
+    //     assertFalse(MazeSolver.isValid(coords, m));
+    // }
+    // @Test
+    // public void testTooBigCol(){
+    //     Maze m = new Maze(new String[] {
+    //         "#___",
+    //             "__F_",
+    //             "S##_",
+    //             "____"
+    //     });
+    //     int[] coords = {0,m.contents[0].length};
+    //     assertFalse(MazeSolver.isValid(coords, m));
+    // }
+    // @Test
+    // public void testCoordsTooSmall(){
+    //     Maze m = new Maze(new String[] {
+    //         "#___",
+    //             "__F_",
+    //             "S##_",
+    //             "____"
+    //     });
+    //     int[] coords = {-1,-1};
+    //     assertFalse(MazeSolver.isValid(coords, m));
+    // }
+    // @Test
+    // public void testIsValid(){
+    //     Maze m = new Maze(new String[] {
+    //         "#___",
+    //             "__F_",
+    //             "S##_",
+    //             "____"
+    //     });
+    //     int[] coords = {1,0};
+    //     assertTrue(MazeSolver.isValid(coords, m));
+    // }
 }
 
 
