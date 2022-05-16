@@ -121,8 +121,6 @@ class Maze {
 	 */
 	public ArrayList<Square> storePath() {
 		ArrayList<Square> path = new ArrayList<Square>();
-		MazeSolver solver = new MazeSolver();
-		QueueWorklist wl = new QueueWorklist();
 		Square target = finish;
 		Square prev = target.getPrevious();
 		while(prev != null){
